@@ -1,12 +1,11 @@
 import tkinter as tk
 import sqlite3
 from tkinter import ttk
-from typing import Tuple, Any, Generator, Literal
+from typing import Literal
 
 from screeninfo import get_monitors
 
 final_grades = [2, 3, 3.5, 4, 4.5, 5, -1]
-
 
 
 class Student:
@@ -264,7 +263,6 @@ final = ?, status = ? WHERE mail = ?'''
 
 database = DBController("students.db")
 
-# root
 root = tk.Tk()
 root.title("Students")
 screen_width = get_monitors()[0].width
