@@ -2,7 +2,7 @@ This is a GUI to manage students in database.
 Database used here is sqlite3.
 Student format is:
 <lt>
-    <li>e-mail</li>
+    <li>e-mail (unique)</li>
     <li>first name</li>
     <li>last name</li>
     <li>project grade 
