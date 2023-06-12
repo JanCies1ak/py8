@@ -61,18 +61,22 @@ class Student:
         self.status = status
 
     @staticmethod
-    def grade_from_str(s: str, t: type(float) | type(int) = type(int)) -> int | float:
+    def grade_from_str(s: str, *, grade_type: Literal["int", "float"] = "int") -> int | float:
         """
         Gives a grade from given str.
         Empty string will be converted into -1.
         :param s: input from user
-        :param t: type of the grade.
+        :param grade_type: type of the grade.
         :return: grade
         """
+        if grade_type == "int":
+            grade_type = int
+        elif grade_type == "float":
+            grade_type = float
         if s == "":
             return -1
         else:
-            return t(s)
+            return grade_type(s)
 
     @staticmethod
     def from_iterable(iterable: list[int | str] | set[int | str] | tuple[int | str]):
@@ -393,9 +397,13 @@ def open_delete_window():
     mail_entry.pack()
 
     def delete():
+        number_before = len(database.students)
         _mail = mail_entry.get()
         database.__delitem__(_mail)
-        load_data()
+        if number_before == len(database.students):
+            print("Student with provided mail don't exist.")
+        else:
+            load_data()
         new_window.destroy()
 
     button = tk.Button(new_window, text="Delete", command=delete)
@@ -460,7 +468,7 @@ def open_add_window():
             homeworks = []
             for homework_entry in homework_frames:
                 homeworks.append(Student.grade_from_str(homework_entry.get()))
-            final = Student.grade_from_str(final_frame.get(), float)
+            final = Student.grade_from_str(final_frame.get(), grade_type="float")
             status = status_frame.get()
             if status == "":
                 status = "None"
@@ -538,7 +546,7 @@ def open_update_window():
                 if list_grade == "":
                     list_grade = student.lists[j]
                 else:
-                    list_grade = Student.grade_from_str(list_grade, int)
+                    list_grade = Student.grade_from_str(list_grade)
                 lists.append(list_grade)
 
             homeworks = []
@@ -547,14 +555,14 @@ def open_update_window():
                 if homework_grade == "":
                     homework_grade = student.home_works[i]
                 else:
-                    homework_grade = Student.grade_from_str(homework_grade, int)
+                    homework_grade = Student.grade_from_str(homework_grade)
                 homeworks.append(homework_grade)
 
             final = final_frame.get()
             if final == "":
                 final = student.final
             else:
-                final = Student.grade_from_str(final, int)
+                final = Student.grade_from_str(final)
 
             status = status_frame.get()
             if status == "":
